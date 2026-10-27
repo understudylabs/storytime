@@ -888,6 +888,16 @@ safety review with a retired rule-7 report and a soft concern stays unsafe; the 
 constants sit below the comment that describes them. **Gates:** lint ✅ · typecheck ✅ ·
 unit+int 1340 ✅ · guardrails 32 ✅ · e2e mock 196 ✅ · e2e real 6 ✅.
 
+### 2026-10-27 — Conductor workspace scripts (DECISIONS #212)
+
+`.conductor/settings.toml` gives each Conductor workspace a setup script (`pnpm install`) and
+two run actions, `dev` and `dev-mock`, on the workspace's own port. Supabase stays a one-time
+`supabase start` per machine. A filled-in `.env.local` in the repository root is copied into
+each new workspace. No app code changed. Pushed straight to `main` at the owner's request:
+the fork has no CI and no reviewer agent yet. **Gates:** lint ✅ · typecheck ✅ · unit+int
+1421 ✅ · guardrails 32 ✅ · e2e mock and real did not start (no Playwright Chromium on this
+machine).
+
 ### 2026-10-21 — every model call has its own Understudy workload (issue #76, DECISIONS #211)
 
 Understudy saw all our calls as one pile under its default workload. Each call now names its

@@ -1,0 +1,29 @@
+"$schema" = "https://conductor.build/schemas/settings.repo.schema.json"
+
+# Conductor workspace scripts. Local Supabase is one Docker stack per machine, shared by
+# every workspace, so it is not started here: run `supabase start` once by hand.
+#
+# The app stops at startup without .env.local. Conductor copies .env* files from the
+# repository root into each new workspace, so keep one filled-in .env.local there.
+
+[scripts]
+setup = """
+set -e
+pnpm install
+if [ ! -f .env.local ]; then
+  echo "No .env.local in this workspace. pnpm dev stops at startup without it."
+  echo "Put a filled-in .env.local in $CONDUCTOR_ROOT_PATH. Conductor copies it into new workspaces."
+fi
+"""
+run_mode = "concurrent"
+
+[scripts.run.dev]
+available_in = ["local"]
+command = "pnpm dev --port $CONDUCTOR_PORT"
+default = true
+icon = "play"
+
+[scripts.run.dev-mock]
+available_in = ["local"]
+command = "pnpm dev:mock --port $CONDUCTOR_PORT"
+icon = "flask-conical"

@@ -34,3 +34,6 @@ test/guardrails/results/
 
 # Vercel project link (per machine).
 .vercel
+
+# Conductor settings for one machine. The shared ones are in .conductor/settings.toml.
+.conductor/settings.local.toml
