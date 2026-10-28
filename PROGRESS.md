@@ -888,6 +888,33 @@ safety review with a retired rule-7 report and a soft concern stays unsafe; the 
 constants sit below the comment that describes them. **Gates:** lint ✅ · typecheck ✅ ·
 unit+int 1340 ✅ · guardrails 32 ✅ · e2e mock 196 ✅ · e2e real 6 ✅.
 
+### 2026-10-27/28 — `pnpm eval` through Understudy in its own project (DECISIONS #213)
+
+`pnpm eval` runs through the Understudy gateway in project `storytime-eval` (org Orchestra),
+which has the 15 workloads of `lib/ai/workload.ts`. No code changed. A run needs the local
+Supabase keys, `ANTHROPIC_BASE_URL=https://api.understudylabs.com`,
+`UNDERSTUDY_PROJECT=storytime-eval`, an Orchestra key in `ANTHROPIC_API_KEY` and `LIVE_API=1`.
+`tsx` does not read `.env.local`. Each run below had the owner's approval and a cost figure.
+
+1. **2026-10-27, smoke run, default project** (`--scenarios=lego-band-a-pair`, estimate
+   $1.53): judge calibration failed `references_above_floor`. `milo-and-juno-lego-story.md`
+   got a median of 3.95 [3.95/4.25/3.95] against the 4.0 floor. The other five checks
+   passed. $1.65. The judge model and prompt hash are the same as in the passing run of
+   2026-10-22, and earlier runs had single samples of 3.75 and 3.95 on this reference, so this
+   reads as noise at the floor. `eval/results/calibration-2026-10-27.json`.
+2. **2026-10-27, smoke run, `storytime-eval`**: calibration 6/6 (LEGO median 4.25). Story
+   4.45, first draft kept, 1,248 words (target 1,300-1,700, inside the ±15% tolerance), first
+   chapter 98 s, total 148 s. $1.85 ($0.18 generation, $1.68 judging). All 26 calls landed in
+   `storytime-eval`, each in the workload of its purpose, none in `main`, served by the model
+   requested. `calibration-2026-10-27-2.json`, `eval-2026-10-27.json`.
+3. **2026-10-28, full run (32 scenarios, estimate $14.99)**: stopped during calibration after
+   $0.61. The Mac went into clamshell sleep 4 minutes after the start. On wake, the open judge
+   calls had passed their 10-minute deadline, and the retry failed with `Connection error.` No
+   result file. A full run takes about two hours, with the lid open. Not run again yet.
+
+Eval spend over the two days: about $4.11. **Gates:** lint ✅ · typecheck ✅ · unit+int
+1421 ✅ · guardrails 32 ✅ · e2e mock and real not run (no app code changed).
+
 ### 2026-10-27 — Conductor workspace scripts (DECISIONS #212)
 
 `.conductor/settings.toml` gives each Conductor workspace a setup script (`pnpm install`) and

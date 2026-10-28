@@ -1,0 +1,732 @@
+{
+  "version": 1,
+  "kind": "eval",
+  "ran_at": "2026-10-27T19:18:08.559Z",
+  "date": "2026-10-27",
+  "pipeline": "live",
+  "pipeline_describe": "F6 runGeneration (write, F7 gate + L4 review, rewrite, save, bible update)",
+  "synthetic": false,
+  "judge_model": "claude-opus-5-5",
+  "judge_prompt": {
+    "version": "judge.v3",
+    "sha256": "b6142b2e22432213"
+  },
+  "calibration": {
+    "ran_at": "2026-10-27T19:15:05.975Z",
+    "judge_model": "claude-opus-5-5",
+    "judge_prompt": {
+      "version": "judge.v3",
+      "sha256": "b6142b2e22432213"
+    },
+    "passed": true,
+    "expectations": [
+      {
+        "id": "references_above_floor",
+        "description": "Each of the four references medians >= 4 over 3 runs (the mean is reported, not gated)",
+        "passed": true,
+        "detail": "mean of medians 4.338 vs 4.37 baseline (drift 0.032); milo-and-juno-lego-story.md=4.25[4.25/4.25/4.45], theo-and-the-lost-levels.md=4.65[4.45/4.65/4.65], milo-and-juno-shark-submarine.md=4.3[4.3/4.2/4.4], theo-the-beautiful-game.md=4.15[4.35/4.15/3.95]",
+        "observed": {
+          "per_story": [
+            {
+              "file": "milo-and-juno-lego-story.md",
+              "median": 4.25,
+              "samples": [
+                4.25,
+                4.25,
+                4.45
+              ],
+              "spread": 0.20000000000000018
+            },
+            {
+              "file": "theo-and-the-lost-levels.md",
+              "median": 4.65,
+              "samples": [
+                4.45,
+                4.65,
+                4.65
+              ],
+              "spread": 0.20000000000000018
+            },
+            {
+              "file": "milo-and-juno-shark-submarine.md",
+              "median": 4.3,
+              "samples": [
+                4.3,
+                4.2,
+                4.4
+              ],
+              "spread": 0.20000000000000018
+            },
+            {
+              "file": "theo-the-beautiful-game.md",
+              "median": 4.15,
+              "samples": [
+                4.35,
+                4.15,
+                3.95
+              ],
+              "spread": 0.39999999999999947
+            }
+          ],
+          "mean_of_medians": 4.338,
+          "baseline_mean": 4.37,
+          "drift_from_baseline": 0.032,
+          "mean_is_gated": false,
+          "drift_warning": false
+        }
+      },
+      {
+        "id": "sabotage_heroes",
+        "description": "LEGO story with Juno's name removed from all but one chapter scores center <= 2",
+        "passed": true,
+        "detail": "center=1 (raw), kept in \"Chapter 1: The Carpenter in Billund\", 12 mentions removed. Evidence: Juno acts on her own only in Chapter 1 (presses the brick, \"Uh oh,\" whispers about Denmark, asks Ole a question, pulls the duck). After that every individual line or action goes to Milo, often twice in a row: \"said Milo. ... said Milo,\" \"Milo carried planks. Milo handed out nails.\" Juno appears only inside group lines like \"shouted the boys,\" so she is silent for eight straight chapters. Milo alone would score highly, but the worst-covered child (1 of 10 chapters) sets the score.",
+        "observed": {
+          "scores_raw": {
+            "center": 1,
+            "craft": 4,
+            "facts": 4,
+            "age_fit": 3,
+            "continuity": 4,
+            "delight": 3
+          },
+          "kept_chapter": 0
+        }
+      },
+      {
+        "id": "sabotage_facts",
+        "description": "Soccer story with three invented dates scores facts <= 2 and the evidence names at least two of them",
+        "passed": true,
+        "detail": "facts=2 (raw); named 3/3 injected dates (1847, 1911, 1926). Evidence: Three key dates are wrong and are repeated in the True Facts list: the FA was founded in 1863, not 1847; the penalty kick entered the Laws in 1891, not 1911; the first World Cup was in 1930, not 1926. Most other facts are accurate and well woven in, including cuju, the Freemasons' Tavern, hacking and rugby, the ball-per-half final, Gaetjens, Pickles, Ken Aston's cards, the Dick, Kerr Ladies, Chastain and Messi. The 'thought there must have been a typo' newspaper story is a popular legend and is not hedged.",
+        "observed": {
+          "scores_raw": {
+            "center": 4,
+            "craft": 4,
+            "facts": 2,
+            "age_fit": 5,
+            "continuity": 4,
+            "delight": 4
+          },
+          "injected": [
+            {
+              "wrong": "1847",
+              "right": "1863",
+              "what": "the founding of the Football Association"
+            },
+            {
+              "wrong": "1911",
+              "right": "1891",
+              "what": "the penalty kick entering the rules"
+            },
+            {
+              "wrong": "1926",
+              "right": "1930",
+              "what": "the first World Cup"
+            }
+          ],
+          "named_dates": [
+            "1847",
+            "1911",
+            "1926"
+          ],
+          "fact_sourcing": "unverifiable_no_fact_pack"
+        }
+      },
+      {
+        "id": "sabotage_age_fit_peril",
+        "description": "Shark story where the great white chases and rams the submarine scores age_fit <= 2 for band A",
+        "passed": true,
+        "detail": "age_fit=1 (raw); word count 1851 -> 1826, length effectively unchanged so this is peril and not padding. Evidence: This is a band A story, where nothing may chase anyone. Chapter 6 has a great white that 'chased them through the dark,' 'Milo smashed his shoulder into the wall,' and the window cracks while water hisses in. The peril is never resolved within the chapter. The vocabulary elsewhere fits, and 1826 words is within the ±15% tolerance.",
+        "observed": {
+          "scores_raw": {
+            "center": 5,
+            "craft": 3,
+            "facts": 3,
+            "age_fit": 1,
+            "continuity": 4,
+            "delight": 3
+          },
+          "disqualified_by_judge": true,
+          "word_count_before": 1851,
+          "word_count_after": 1826
+        }
+      },
+      {
+        "id": "sabotage_padding",
+        "description": "Video-game story padded with 900 words of repeated description drops delight by >= 2 versus the original",
+        "passed": true,
+        "detail": "delight=2 vs original 4 (drop 2, need >= 2); age_fit=4 recorded but not asserted; 2471 -> 3390 words, STILL inside the ±15% tolerance, so the word-count cap does not fire and this row rests entirely on the judge noticing the padding",
+        "observed": {
+          "scores_raw": {
+            "center": 5,
+            "craft": 3,
+            "facts": 5,
+            "age_fit": 4,
+            "continuity": 5,
+            "delight": 2
+          },
+          "original_delight": 4,
+          "words_added": 919,
+          "still_within_tolerance": true
+        }
+      },
+      {
+        "id": "pairwise_original_beats_sabotage",
+        "description": "Pairwise: the original LEGO story beats the sabotaged copy in both orders with confidence >= 0.7",
+        "passed": true,
+        "detail": "original won both orders; confidences 0.97 and 0.95",
+        "observed": {
+          "verdict": "A",
+          "flipped": false,
+          "first_order_verdict": "A",
+          "swapped_order_verdict": "B",
+          "swapped_as_first_terms": "A",
+          "confidences": [
+            0.97,
+            0.95
+          ]
+        }
+      }
+    ],
+    "reference_scores": [
+      {
+        "file": "milo-and-juno-lego-story.md",
+        "band": "A",
+        "word_count": 1540,
+        "scores_raw": {
+          "center": 4,
+          "craft": 4,
+          "facts": 4,
+          "age_fit": 4,
+          "continuity": 5,
+          "delight": 5
+        },
+        "overall_raw": 4.25,
+        "overall_final": 4.25,
+        "overall_samples": [
+          4.25,
+          4.25,
+          4.45
+        ],
+        "overall_spread": 0.20000000000000018,
+        "caps_applied": [
+          "none"
+        ],
+        "disqualified": false,
+        "cap_context": {
+          "guardrailBreach": false,
+          "inventedFact": false,
+          "wordCountOutOfRange": false,
+          "narrativeWordCount": 1540,
+          "target": {
+            "min": 1300,
+            "max": 1700
+          },
+          "factSourcing": "unverifiable_no_fact_pack",
+          "notes": [
+            "no F7 gate result available: guardrail breach rests on the judge alone",
+            "unsourced_fact NOT evaluated: no fact pack, so true_facts fact_ids are unverifiable (synthetic for the reference stories). Only the judge's own reading of the facts counts."
+          ]
+        },
+        "judge_error": null
+      },
+      {
+        "file": "theo-and-the-lost-levels.md",
+        "band": "C",
+        "word_count": 2471,
+        "scores_raw": {
+          "center": 5,
+          "craft": 4,
+          "facts": 5,
+          "age_fit": 5,
+          "continuity": 5,
+          "delight": 4
+        },
+        "overall_raw": 4.65,
+        "overall_final": 4.65,
+        "overall_samples": [
+          4.45,
+          4.65,
+          4.65
+        ],
+        "overall_spread": 0.20000000000000018,
+        "caps_applied": [
+          "none"
+        ],
+        "disqualified": false,
+        "cap_context": {
+          "guardrailBreach": false,
+          "inventedFact": false,
+          "wordCountOutOfRange": false,
+          "narrativeWordCount": 2471,
+          "target": {
+            "min": 2200,
+            "max": 3200
+          },
+          "factSourcing": "unverifiable_no_fact_pack",
+          "notes": [
+            "no F7 gate result available: guardrail breach rests on the judge alone",
+            "unsourced_fact NOT evaluated: no fact pack, so true_facts fact_ids are unverifiable (synthetic for the reference stories). Only the judge's own reading of the facts counts."
+          ]
+        },
+        "judge_error": null
+      },
+      {
+        "file": "milo-and-juno-shark-submarine.md",
+        "band": "A",
+        "word_count": 1851,
+        "scores_raw": {
+          "center": 5,
+          "craft": 4,
+          "facts": 4,
+          "age_fit": 4,
+          "continuity": 5,
+          "delight": 4
+        },
+        "overall_raw": 4.3,
+        "overall_final": 4.3,
+        "overall_samples": [
+          4.3,
+          4.2,
+          4.4
+        ],
+        "overall_spread": 0.20000000000000018,
+        "caps_applied": [
+          "none"
+        ],
+        "disqualified": false,
+        "cap_context": {
+          "guardrailBreach": false,
+          "inventedFact": false,
+          "wordCountOutOfRange": false,
+          "narrativeWordCount": 1851,
+          "target": {
+            "min": 1300,
+            "max": 1700
+          },
+          "factSourcing": "unverifiable_no_fact_pack",
+          "notes": [
+            "no F7 gate result available: guardrail breach rests on the judge alone",
+            "unsourced_fact NOT evaluated: no fact pack, so true_facts fact_ids are unverifiable (synthetic for the reference stories). Only the judge's own reading of the facts counts."
+          ]
+        },
+        "judge_error": null
+      },
+      {
+        "file": "theo-the-beautiful-game.md",
+        "band": "C",
+        "word_count": 2633,
+        "scores_raw": {
+          "center": 4,
+          "craft": 4,
+          "facts": 4,
+          "age_fit": 5,
+          "continuity": 4,
+          "delight": 4
+        },
+        "overall_raw": 4.15,
+        "overall_final": 4.15,
+        "overall_samples": [
+          4.35,
+          4.15,
+          3.95
+        ],
+        "overall_spread": 0.39999999999999947,
+        "caps_applied": [
+          "none"
+        ],
+        "disqualified": false,
+        "cap_context": {
+          "guardrailBreach": false,
+          "inventedFact": false,
+          "wordCountOutOfRange": false,
+          "narrativeWordCount": 2633,
+          "target": {
+            "min": 2200,
+            "max": 3200
+          },
+          "factSourcing": "unverifiable_no_fact_pack",
+          "notes": [
+            "no F7 gate result available: guardrail breach rests on the judge alone",
+            "unsourced_fact NOT evaluated: no fact pack, so true_facts fact_ids are unverifiable (synthetic for the reference stories). Only the judge's own reading of the facts counts."
+          ]
+        },
+        "judge_error": null
+      }
+    ],
+    "judge_calls": 18,
+    "cost_usd": 1.594555,
+    "notes": [
+      "§5: if an expectation fails, fix the judge prompt - never the reference stories.",
+      "The five sabotage/pairwise rows are checked against the judge's RAW criterion scores, before our automatic caps, so no row can pass because of our own arithmetic.",
+      "The reference stories predate fact packs, so `unsourced_fact` is recorded as unverifiable rather than passed (see lib/eval/caps.ts).",
+      "Manifest note: references 1 and 3 use British spelling, 2 and 4 American. The app defaults to American; prompts/judge.v2.md instructs the judge not to deduct for either.",
+      "Two of the four references carry 11 headed sections and do not validate against StoryOutput (DECISIONS.md #25), so calibration scores the looser JudgeableStory shape."
+    ]
+  },
+  "pass_criteria": {
+    "mean_overall_min": 4,
+    "per_scenario_min": 3.5,
+    "disqualified_max": 0,
+    "calibration_repeats": 3,
+    "calibration_reference_floor": 4,
+    "calibration_baseline_mean": 4.37,
+    "calibration_mean_tolerance": 0.35
+  },
+  "scenarios": [
+    {
+      "scenario_id": "lego-band-a-pair",
+      "why": "F13: band A pair on history-of-lego. The first reference story, first in a series.",
+      "band": "A",
+      "children": [
+        {
+          "name": "Milo",
+          "age": 7
+        },
+        {
+          "name": "Juno",
+          "age": 4
+        }
+      ],
+      "topic_key": "history-of-lego",
+      "length_minutes": 10,
+      "word_count": 1248,
+      "target_words": {
+        "min": 1300,
+        "max": 1700
+      },
+      "word_count_in_range": true,
+      "gate": {
+        "outcome": "pass",
+        "hard_violations": 0,
+        "hard_violation_rules": [],
+        "failures": [],
+        "scary_level": 1
+      },
+      "judge_ok": true,
+      "judge_error": null,
+      "scores_raw": {
+        "center": 5,
+        "craft": 4,
+        "facts": 4,
+        "age_fit": 5,
+        "continuity": 5,
+        "delight": 4
+      },
+      "overall_raw": 4.45,
+      "overall_final": 4.45,
+      "caps_applied": [
+        "none"
+      ],
+      "disqualified": false,
+      "cap_context": {
+        "guardrailBreach": false,
+        "inventedFact": false,
+        "wordCountOutOfRange": false,
+        "narrativeWordCount": 1248,
+        "target": {
+          "min": 1300,
+          "max": 1700
+        },
+        "factSourcing": "checked",
+        "notes": []
+      },
+      "best_moment": "Juno pressed two new bricks together. CLICK! He yanked them hard. They held tight. \"IT CLICKS!\" Juno shouted.",
+      "worst_moment": "Milo's brick shark did not budge, not even once.",
+      "continuity_reference": null,
+      "scary_level_check": null,
+      "editor_notes": [
+        "Pay off the minifigure keepsake in Chapter 8. Milo could pull it from his pocket and stand it on top of his tower, giving the return home a true souvenir moment.",
+        "Fix the minifigure fact so it is accurate. For example: \"the first little person with legs that bend and hands that hold things.\" Update the True Facts entry to match.",
+        "Trim the filler tags (\"the whole time\", \"the whole way down\", \"not even once\"). Turn one of Clack's Chapter 8 fact-lines into a hands-on moment for Juno, as the old-and-new brick click does for Milo."
+      ],
+      "first_draft": {
+        "passed": true,
+        "failures": [],
+        "reasons": [],
+        "mended_rules": [],
+        "story": {
+          "title": "Milo, Juno, and the Duck Who Remembered Bricks",
+          "subtitle": "A sleepy trip back to where LEGO began",
+          "chapters": [
+            {
+              "heading": "Chapter 1: The Wooden Duck Wakes Up",
+              "text": "Milo stacked red bricks into a tower. Juno stomped a toy dinosaur beside it.\n\nA toy shark watched from the rug. It was way past bedtime. The boys should be asleep.\n\nMilo pressed one more brick. CLICK! The tower wiggled. It did not fall.\n\nThen something glowed in the toy box. A little wooden duck blinked its eyes.\n\n\"Quack-quack-CLACK!\" it said. \"I am Clack. I am the oldest toy in this whole room.\"\n\nJuno gasped. \"A talking duck!\"\n\nClack waddled onto the rug, wobbling on his little wooden feet. \"Want to see where bricks began?\" he asked.\n\nMilo grinned. \"Yes! Yes please!\"\n\nClack tapped his wooden wing. The rug turned soft and swirly, like water.\n\nWHOOOSH! The boys landed in a sunny yard. Wood shavings covered the ground like curly snow.\n\nA man sat carving a little wooden duck, just like Clack.\n\n\"That's Ole Kirk,\" said Clack. \"He's a carpenter. That means he makes things out of wood.\"\n\n\"Hello, boys,\" said Ole Kirk. \"Want to help me carve?\"\n\nMilo picked up a small wooden truck. \"It's so smooth!\" he said.\n\n\"I started making toys right here, in **Billund, Denmark**, back in **1932**,\" said Ole Kirk.\n\nJuno counted the toys in a row. \"One duck, two duck, three duck!\"\n\n\"Ducks, trucks, and yo-yos,\" said Ole Kirk. \"All made right in my little workshop.\"",
+              "shout_line": null
+            },
+            {
+              "heading": "Chapter 2: Play Well",
+              "text": "A new wooden sign leaned against the workshop wall.\n\nOle Kirk dipped his brush into some paint.\n\n\"What are you writing?\" asked Milo.\n\n\"A new name,\" said Ole Kirk. \"For my whole toy company.\"\n\nJuno hopped closer. \"Can dinosaurs help pick it?\"\n\nOle Kirk laughed. \"Not today, little one.\"\n\nHe painted four big letters: **L-E-G-O**.\n\n\"It comes from two Danish words,\" he said. \" 'Leg godt.' It means 'play well.'\"\n\nMilo tried saying it slowly. \"Leg-godt! Play well!\"\n\nClack flapped his wings. \"That's it exactly, Milo!\"\n\n\"My company got that very name in **1934**,\" said Ole Kirk.\n\nJuno clapped his hands. \"Play well! Play well!\"\n\nThe sign went up with a soft THUNK.\n\nClack spun in a happy circle. His wooden wing squeaked the whole time.\n\nEverybody laughed at the squeak.\n\n\"Play well,\" Milo whispered to himself. \"I like that a lot.\"",
+              "shout_line": "PLAY WELL!"
+            },
+            {
+              "heading": "Chapter 3: The Hissing Machine",
+              "text": "A giant metal machine rumbled into the workshop.\n\nIt hissed like a sleepy dragon.\n\nMilo's eyes went wide. \"What IS that thing?\"\n\n\"A new machine,\" said Ole Kirk. \"It melts plastic and squirts it into shapes.\"\n\nJuno sniffed the air. \"It smells funny!\"\n\n\"Plastic is a new kind of stuff,\" said Clack. \"Not wood. It's smooth and hard.\"\n\nOle Kirk pulled a big lever. SPLOOSH! Melted plastic squeezed into a tiny mold.\n\nOut popped a little plastic brick, still warm.\n\n\"In **1947**, I bought one of the very first machines like this in all of Denmark,\" said Ole Kirk.\n\nMilo held the warm brick. \"It's so light!\"\n\nJuno tried to stack two bricks. They wobbled. They tipped right over.\n\n\"Hmm,\" said Milo, tapping his chin. \"These bricks need something to hold them together.\"\n\nOle Kirk nodded slowly. \"You might be onto something, young man.\"\n\nJuno picked the fallen bricks back up, not worried one bit.",
+              "shout_line": null
+            },
+            {
+              "heading": "Chapter 4: The Tubes Inside",
+              "text": "A man burst into the room holding a drawing.\n\n\"Father, I think I solved it!\" he said.\n\n\"This is Godtfred,\" said Clack. \"Ole Kirk's own son.\"\n\nMilo looked at the drawing. Little tubes sat inside a brick's bottom.\n\n\"What if tubes inside grabbed the bumps on top?\" said Milo, pointing at the page.\n\nGodtfred's mouth dropped open. \"That's exactly my idea!\"\n\nJuno pressed two new bricks together. CLICK!\n\nHe yanked them hard. They held tight.\n\n\"IT CLICKS!\" Juno shouted.\n\n\"In **1958**, this brick got its special new shape,\" said Godtfred. \"Now towers won't fall apart.\"\n\nMilo stacked ten bricks high, one careful brick at a time.\n\nHe shook the tower hard. It wiggled. It did not fall.\n\n\"Only the best is good enough. That's what I always say,\" said Ole Kirk, smiling at them both.\n\nClack clapped his wooden wings together. \"Best brick ever made, if you ask me!\"",
+              "shout_line": "IT CLICKS!"
+            },
+            {
+              "heading": "Chapter 5: The First Kids to Click",
+              "text": "Clack waddled them into a sunny playroom.\n\nDanish children sat on the floor with brick boxes.\n\n\"These kids,\" said Clack, \"were some of the very first children ever to play with these new bricks.\"\n\nA girl stacked a tall tower. A boy bumped the table by accident.\n\nHer tower did not even wobble.\n\nJuno gasped. \"Mine always falls over!\"\n\n\"Not these ones,\" said the girl. \"Go on, try it.\"\n\nMilo built a shark shape from blue bricks. Juno built a dinosaur from green ones.\n\nThey pressed their creatures nose to nose, giggling the whole time.\n\n\"Old wooden toys could crack or fall apart,\" said Clack. \"These new bricks stick tight, every single time.\"\n\nJuno stomped his brick dinosaur across the rug. CRUNCH CRUNCH CRUNCH!\n\nMilo's brick shark did not budge, not even once.\n\n\"Play well!\" all the Danish kids cheered together, waving their bricks in the air.",
+              "shout_line": null
+            },
+            {
+              "heading": "Chapter 6: A Whole Park Made of Bricks",
+              "text": "Big gates creaked open right in front of them.\n\n\"LEGOLAND!\" read a giant painted sign.\n\nJuno's jaw dropped open. \"A whole park made of bricks?\"\n\nBrick towers, brick castles, and tiny brick boats filled the park.\n\nA brick dinosaur stood taller than Milo, with a long brick neck.\n\n\"This park opened right in **Billund**, in **1968**,\" said Clack.\n\nMilo counted little brick windows on a tiny castle. \"One, two, three, four!\"\n\nJuno hugged the giant brick dinosaur's leg. \"He's my friend now.\"\n\nA brick shark swam slowly through a brick pond nearby.\n\nMilo waved at it. \"Hi there, shark buddy!\"\n\nClack chuckled, waddling along beside them. \"Billund is still home to the whole LEGO company, even today.\"\n\nThe boys ran down a brick path together, laughing the whole way down.",
+              "shout_line": null
+            },
+            {
+              "heading": "Chapter 7: The Little Yellow Friend",
+              "text": "A tiny yellow figure stood on the path ahead.\n\nIt had a round head and a big smiling face.\n\n\"Who's that?\" asked Milo.\n\n\"A minifigure,\" said Clack. \"That means a tiny little brick person. The very first one, from **1978**.\"\n\nJuno poked its little plastic arm. It wiggled. \"It moves!\"\n\n\"Before this,\" said Clack, \"LEGO people didn't have arms or legs that could bend.\"\n\nMilo picked up the minifigure carefully. He moved its arm up and down.\n\n\"Now it can wave!\" He waved its tiny hand at Juno.\n\nJuno waved back, giggling so hard he snorted.\n\nThe minifigure's smile never changed, but somehow it still felt happy.\n\nClack nodded his wooden head. \"Millions of these little folks were about to go play with kids everywhere.\"\n\nMilo tucked the minifigure gently into his pocket. \"I'll take good care of you.\"",
+              "shout_line": null
+            },
+            {
+              "heading": "Chapter 8: Back to the Carpet",
+              "text": "Clack tapped his wing again. WHOOOSH!\n\nThe swirly rug turned back into their own bedroom carpet.\n\nMilo blinked. His brick tower still stood tall right beside him.\n\nJuno hugged his toy dinosaur tight against his chest.\n\n\"Bricks made today still click with old bricks,\" said Clack. \"The shape never ever changed.\"\n\nMilo pressed a brand new brick onto an old one. CLICK! It held just perfectly.\n\n\"The LEGO company has made billions and billions of bricks,\" said Clack. \"More than anyone could ever count.\"\n\nJuno tried counting anyway. \"One, two, three... a hundred!\"\n\nEverybody laughed softly in the quiet room.\n\nClack waddled over to the toy box and curled up small.\n\n\"Remember,\" he said with a sleepy quack, \"play well.\"\n\nA tiny wooden duck sat on the carpet, right where the glow had been.\n\nMilo pulled his blanket over himself and over Juno too.\n\nThe toy shark and the toy dinosaur rested side by side on the shelf.",
+              "shout_line": null
+            }
+          ],
+          "ending_line": "Goodnight, Milo. Goodnight, Juno. Play well.",
+          "true_facts": [
+            {
+              "text": "**Ole Kirk Christiansen** was a carpenter in **Billund, Denmark**, who started making wooden toys in **1932**.",
+              "fact_id": "f1"
+            },
+            {
+              "text": "LEGO's name comes from the Danish words **\"leg godt,\"** which means **\"play well.\"**",
+              "fact_id": "f2"
+            },
+            {
+              "text": "The toy company got its name **LEGO** in **1934**.",
+              "fact_id": "f3"
+            },
+            {
+              "text": "Ole Kirk carved **wooden ducks, trucks, and yo-yos** in his workshop.",
+              "fact_id": "f4"
+            },
+            {
+              "text": "In **1947**, LEGO got one of the very first machines in Denmark that could melt plastic into toy shapes.",
+              "fact_id": "f6"
+            },
+            {
+              "text": "In **1958**, the brick got little **tubes inside** that grab the bumps on the brick below, so towers hold tight.",
+              "fact_id": "f7"
+            },
+            {
+              "text": "The new **1958** bricks could be stacked into towers that do not fall apart, even when shaken.",
+              "fact_id": "f8"
+            },
+            {
+              "text": "**Godtfred**, Ole Kirk's son, helped figure out the tube shape that makes bricks click together.",
+              "fact_id": "f9"
+            },
+            {
+              "text": "The first tiny **LEGO minifigure**, with arms and legs that bend, showed up in **1978**.",
+              "fact_id": "f11"
+            },
+            {
+              "text": "Before **1978**, LEGO people could not wave or bend their arms and legs.",
+              "fact_id": "f12"
+            },
+            {
+              "text": "**Billund** is still where the whole LEGO company is based today.",
+              "fact_id": "f13"
+            },
+            {
+              "text": "**Legoland**, a whole park made of bricks, opened in **Billund** in **1968**.",
+              "fact_id": "f14"
+            },
+            {
+              "text": "Bricks made today still click perfectly with bricks made a long time ago.",
+              "fact_id": "f15"
+            },
+            {
+              "text": "The LEGO company thinks it has made **billions and billions** of bricks since it started.",
+              "fact_id": "f20"
+            }
+          ],
+          "bible_suggestions": {
+            "new_recurring": [
+              {
+                "name": "Clack the Wooden Duck",
+                "type": "character",
+                "rule": "A small wooden duck toy who wakes up glowing, waddles the children into true history or science adventures through a swirly rug, and always signs off with 'play well.'"
+              }
+            ],
+            "ending_summary": "Milo and Juno returned to their bedroom carpet with their brick tower still standing and a tiny wooden duck toy left sitting on the rug right where Clack's glow had been."
+          },
+          "estimated_read_minutes": 10
+        },
+        "request": {
+          "children": [
+            {
+              "name": "Milo",
+              "age": 7,
+              "likes": [
+                "LEGO",
+                "sharks"
+              ],
+              "notes": null
+            },
+            {
+              "name": "Juno",
+              "age": 4,
+              "likes": [
+                "dinosaurs"
+              ],
+              "notes": null
+            }
+          ],
+          "age_band": "A",
+          "tones": [
+            "funny",
+            "exciting"
+          ],
+          "length_minutes": 10,
+          "target_words": {
+            "min": 1300,
+            "max": 1700
+          },
+          "topic_label": "how Lego was invented and the first kids who used it",
+          "topic_key": "history-of-lego",
+          "avoid": [],
+          "care_notes": null,
+          "requested_characters": [],
+          "rewrite_reasons": []
+        }
+      },
+      "generation_cost_usd": 0.176531,
+      "judge_cost_usd": 0.083659,
+      "latency_to_first_chapter_ms": 98282,
+      "first_chapter_streamed": true,
+      "latency_total_ms": 147922,
+      "latency_by_step": {
+        "classify_input": {
+          "calls": 1,
+          "ms": 1208,
+          "output_tokens": 81
+        },
+        "factpack": {
+          "calls": 1,
+          "ms": 22124,
+          "output_tokens": 2338
+        },
+        "factpack_review": {
+          "calls": 1,
+          "ms": 1887,
+          "output_tokens": 102
+        },
+        "write": {
+          "calls": 1,
+          "ms": 107134,
+          "output_tokens": 10503
+        },
+        "safety_review": {
+          "calls": 1,
+          "ms": 1820,
+          "output_tokens": 52
+        },
+        "quality": {
+          "calls": 1,
+          "ms": 9214,
+          "output_tokens": 1819
+        },
+        "bible_update": {
+          "calls": 1,
+          "ms": 5376,
+          "output_tokens": 502
+        }
+      }
+    }
+  ],
+  "summary": {
+    "scenarios": 1,
+    "scored": 1,
+    "judge_errors": 0,
+    "not_run": [],
+    "mean_overall": 4.45,
+    "min_overall": 4.45,
+    "worst_scenario": "lego-band-a-pair",
+    "disqualified": 0,
+    "word_count_failures": [],
+    "continuity_failures": [],
+    "scary_level_failures": [],
+    "criterion_means": {
+      "center": 5,
+      "craft": 4,
+      "facts": 4,
+      "age_fit": 5,
+      "continuity": 5,
+      "delight": 4
+    },
+    "first_draft": {
+      "passed": 1,
+      "of": 1
+    },
+    "passed": true,
+    "failures": [],
+    "latency": {
+      "first_chapter": {
+        "n": 1,
+        "median_ms": 98282,
+        "p95_ms": 98282
+      },
+      "total": {
+        "n": 1,
+        "median_ms": 147922,
+        "p95_ms": 147922
+      },
+      "by_step": {
+        "classify_input": {
+          "calls": 1,
+          "ms": 1208,
+          "output_tokens": 81
+        },
+        "factpack": {
+          "calls": 1,
+          "ms": 22124,
+          "output_tokens": 2338
+        },
+        "factpack_review": {
+          "calls": 1,
+          "ms": 1887,
+          "output_tokens": 102
+        },
+        "write": {
+          "calls": 1,
+          "ms": 107134,
+          "output_tokens": 10503
+        },
+        "safety_review": {
+          "calls": 1,
+          "ms": 1820,
+          "output_tokens": 52
+        },
+        "quality": {
+          "calls": 1,
+          "ms": 9214,
+          "output_tokens": 1819
+        },
+        "bible_update": {
+          "calls": 1,
+          "ms": 5376,
+          "output_tokens": 502
+        }
+      },
+      "no_streamed_chapter": []
+    }
+  },
+  "cost": {
+    "generation_usd": 0.176531,
+    "judge_usd": 1.678214,
+    "total_usd": 1.854745,
+    "log_rows": 7
+  },
+  "notes": [
+    "Judge payloads are checked blind before every call (lib/eval/blind.ts); the judge never saw a model id.",
+    "The weighted overall and the automatic caps are recomputed in our code, not taken from the judge (DECISIONS.md #11/#12)."
+  ]
+}
